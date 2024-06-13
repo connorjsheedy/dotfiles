@@ -69,6 +69,7 @@ require('lazy').setup({
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
+  -- File/project manager
   'ThePrimeagen/harpoon',
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
@@ -80,6 +81,19 @@ require('lazy').setup({
     opts = {},
     -- Optional dependencies
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function ()
+      require("oil").setup({
+        delete_to_trash = true,
+        skip_confirm_for_simple_edits = true,
+        view_options = {
+          show_hidden = true,
+          natural_order = true,
+          is_always_hidden = function (name, _)
+            return name == '..' or name == '.git'
+          end
+        }
+      })
+    end,
   },
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -142,7 +156,6 @@ require('lazy').setup({
       }
   },
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -219,6 +232,114 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter', opts = {}
   },
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*",  -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = "markdown",
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+    --   "BufReadPre path/to/my-vault/**.md",
+    --   "BufNewFile path/to/my-vault/**.md",
+    -- },
+    dependencies = {
+      -- Required.
+      "nvim-lua/plenary.nvim",
+
+      -- see below for full list of optional dependencies 👇
+    },
+    opts = {
+      workspaces = {
+        {
+          name = "work",
+          path = "~/ensodata/projects",
+        },
+      },
+      -- see below for full list of options 👇
+    },
+    mappings = {
+      -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
+      ["gf"] = {
+        action = function()
+          return require("obsidian").util.gf_passthrough()
+        end,
+        opts = { noremap = false, expr = true, buffer = true },
+      },
+      -- Toggle check-boxes.
+      ["<leader>ch"] = {
+        action = function()
+          return require("obsidian").util.toggle_checkbox()
+        end,
+        opts = { buffer = true },
+      },
+      -- Smart action depending on context, either follow link or toggle checkbox.
+      ["<cr>"] = {
+        action = function()
+          return require("obsidian").util.smart_action()
+        end,
+        opts = { buffer = true, expr = true },
+      }
+    },
+    ui = {
+      enable = true,  -- set to false to disable all additional syntax features
+      update_debounce = 200,  -- update delay after a text change (in milliseconds)
+      -- Define how various check-boxes are displayed
+      checkboxes = {
+        -- NOTE: the 'char' value has to be a single character, and the highlight groups are defined below.
+        [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
+        ["x"] = { char = "", hl_group = "ObsidianDone" },
+        [">"] = { char = "", hl_group = "ObsidianRightArrow" },
+        ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
+        -- Replace the above with this if you don't have a patched font:
+        -- [" "] = { char = "☐", hl_group = "ObsidianTodo" },
+        -- ["x"] = { char = "✔", hl_group = "ObsidianDone" },
+
+        -- You can also add more custom ones...
+      },
+      -- Use bullet marks for non-checkbox lists.
+      bullets = { char = "•", hl_group = "ObsidianBullet" },
+      external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
+      -- Replace the above with this if you don't have a patched font:
+      -- external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
+      reference_text = { hl_group = "ObsidianRefText" },
+      highlight_text = { hl_group = "ObsidianHighlightText" },
+      tags = { hl_group = "ObsidianTag" },
+      block_ids = { hl_group = "ObsidianBlockID" },
+      hl_groups = {
+        -- The options are passed directly to `vim.api.nvim_set_hl()`. See `:help nvim_set_hl`.
+        ObsidianTodo = { bold = true, fg = "#f78c6c" },
+        ObsidianDone = { bold = true, fg = "#89ddff" },
+        ObsidianRightArrow = { bold = true, fg = "#f78c6c" },
+        ObsidianTilde = { bold = true, fg = "#ff5370" },
+        ObsidianBullet = { bold = true, fg = "#89ddff" },
+        ObsidianRefText = { underline = true, fg = "#c792ea" },
+        ObsidianExtLinkIcon = { fg = "#c792ea" },
+        ObsidianTag = { italic = true, fg = "#89ddff" },
+        ObsidianBlockID = { italic = true, fg = "#89ddff" },
+        ObsidianHighlightText = { bg = "#75662e" },
+      },
+    },
+
+    -- Specify how to handle attachments.
+    attachments = {
+      -- The default folder to place images in via `:ObsidianPasteImg`.
+      -- If this is a relative path it will be interpreted as relative to the vault root.
+      -- You can always override this per image by passing a full path to the command instead of just a filename.
+      img_folder = "assets/imgs",  -- This is the default
+      -- A function that determines the text to insert in the note when pasting an image.
+      -- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
+      -- This is the default implementation.
+      ---@param client obsidian.Client
+      ---@param path obsidian.Path the absolute path to the image file
+      ---@return string
+      img_text_func = function(client, path)
+        path = client:vault_relative_path(path) or path
+        return string.format("![%s](%s)", path.name, path)
+      end,
+    },
+  }
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -234,12 +355,13 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
+vim.opt.conceallevel = 1
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
@@ -301,8 +423,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Oil setup and mappings
-require("oil").setup()
-vim.keymap.set("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 
 -- [[ Configure Telescope ]]

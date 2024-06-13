@@ -123,6 +123,7 @@ alias .4='cd ../../../../'                  # Go back 4 directory levels
 alias .5='cd ../../../../../'               # Go back 5 directory levels
 alias .6='cd ../../../../../../'            # Go back 6 directory levels
 alias ~="cd ~"                              # ~:            Go Home
+alias rm_gz_ext="~/ensodata/scripts/remove_gz.sh" # Remove the gz extension from all files in a dir
 
 # Git command alias
 alias clean_branches='git branch --merged | egrep -v "(^\*|master|development|staging)" | xargs git branch -d;'
@@ -131,7 +132,6 @@ alias gl="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold gr
 "
 alias rb_trunk="git rebase -i trunk"
 alias update_trunk="git checkout trunk && git pull && git checkout -"
-# Environment variables
 
 
 #   extract:  Extract most know archives with one command
@@ -170,3 +170,6 @@ alias cleanupDS="find . -type f -name '*.DS_Store' -ls -delete"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH="/opt/homebrew/sbin:$PATH"
 source /Users/connorsheedy/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+set -o vi
+eval "$(zoxide init zsh)"
