@@ -2,8 +2,6 @@
 
 setopt extended_glob null_glob
 
-#  /opt/homebrew/bin
-#  /opt/homebrew/sbin
 path=(
     $path
     $HOME/bin
@@ -23,7 +21,6 @@ export PATH
 set -o vi
 
 export EDITOR='nvim'
-export VISUAL='nvim'
 
 export WORK="$HOME/ensodata"
 export BROWSER='arc'
@@ -41,9 +38,9 @@ export XDG_CONFIG_HOME="$HOME"/.config
 # ~~~~~~~~~~~~~~~~~~~~~~ OMZ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="arrow" # set by `omz`
+# ZSH_THEME="arrow" # set by `omz`
 
-zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode auto      # update automatically without asking
 
 plugins=(git thefuck python zsh-autosuggestions poetry tmux pylint)
 
@@ -69,6 +66,22 @@ setopt SHARE_HISTORY
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~ Prompt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+PURE_GIT_PULL=0
+
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  fpath+=("$(brew --prefix)/share/zsh/site-functions")
+else
+  fpath+=($HOME/.zsh/pure)
+fi
+
+autoload -U promptinit; promptinit
+prompt pure
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~ Alias ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
