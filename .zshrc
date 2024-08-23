@@ -8,6 +8,7 @@ path=(
     $SCRIPTS
     $HOME/.local/bin
     $HOME/.cargo/bin
+    $HOME/.npm-global/bin
 )
 
 # Remove duplicates and non-entries

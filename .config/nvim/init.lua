@@ -114,17 +114,6 @@ require('lazy').setup({
     },
   },
   {
-    "https://github.com/apple/pkl-neovim",
-    lazy = true,
-    event = "BufReadPre *.pkl",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-    },
-    build = function()
-      vim.cmd("TSInstall! pkl")
-    end,
-  },
-  {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
@@ -411,6 +400,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
 -- Remap half-page up and down to include auto center
 vim.keymap.set('n', '<C-d>', "<C-d>zz")
 vim.keymap.set('n', 'n', "nzz")
@@ -472,12 +462,12 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 -- Harpoon keymaps
 local harpoon_ui = require("harpoon.ui")
-vim.keymap.set("n", '<leader>hm', require('harpoon.mark').add_file, { desc = "[H]arpoon [M]ark file" })
+vim.keymap.set("n", '<leader>m', require('harpoon.mark').add_file, { desc = "[H]arpoon [M]ark file" })
 vim.keymap.set("n", '<leader>hu', harpoon_ui.toggle_quick_menu, { desc = "[H]arpoon [U]I Toggle Quick View" })
-vim.keymap.set("n", '<leader>h1', function() harpoon_ui.nav_file(1) end, { desc = "Navigate to Harpoon File 1" })
-vim.keymap.set("n", '<leader>h2', function() harpoon_ui.nav_file(2) end, { desc = "Navigate to Harpoon File 2" })
-vim.keymap.set("n", '<leader>h3', function() harpoon_ui.nav_file(3) end, { desc = "Navigate to Harpoon File 3" })
-vim.keymap.set("n", '<leader>h4', function() harpoon_ui.nav_file(4) end, { desc = "Navigate to Harpoon File 4" })
+vim.keymap.set("n", '<leader>1', function() harpoon_ui.nav_file(1) end, { desc = "Navigate to Harpoon File 1" })
+vim.keymap.set("n", '<leader>2', function() harpoon_ui.nav_file(2) end, { desc = "Navigate to Harpoon File 2" })
+vim.keymap.set("n", '<leader>3', function() harpoon_ui.nav_file(3) end, { desc = "Navigate to Harpoon File 3" })
+vim.keymap.set("n", '<leader>4', function() harpoon_ui.nav_file(4) end, { desc = "Navigate to Harpoon File 4" })
 
 -- UndoTree
 vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle) -- Config Lua Line

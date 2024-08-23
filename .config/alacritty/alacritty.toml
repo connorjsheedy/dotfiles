@@ -18,7 +18,13 @@ size = 12.0
 normal = {family = "FiraCode Nerd Font Mono", style = "Regular"}
 
 [cursor]
-style = { shape = "Block", blinking = "Never"}
+blink_interval = 500
+blink_timeout = 5
+unfocused_hollow = false
+
+[cursor.style]
+blinking = "Off"
+shape = "Block"
 
 [mouse]
 hide_when_typing = true
