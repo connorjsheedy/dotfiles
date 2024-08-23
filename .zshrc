@@ -40,16 +40,12 @@ export XDG_CONFIG_HOME="$HOME"/.config
 export ZSH="$HOME/.oh-my-zsh"
 # ZSH_THEME="arrow" # set by `omz`
 
-# zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode auto      # update automatically without asking
 
-plugins=(git thefuck python zsh-autosuggestions poetry tmux pylint)
+plugins=(git thefuck python zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Zoxide ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-eval "$(zoxide init zsh)"
 
 # ~~~~~~~~~~~~~~~~~~~~~~ History ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -129,6 +125,8 @@ bd () {
     cd "${bd_cmd}" && ls
 }
 
+# Christian's bad ass prompt for opening any file, previewing and then launching nvim
+
 vif () {
    VFILE=$(fzf --preview='bat --color=always {}')
    [[ -n ${VFILE} ]] && echo "${VFILE}" && nvim "${VFILE}"
@@ -145,7 +143,6 @@ alias gl="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold gr
 "
 alias gr="git rebase -i"
 alias gc="git checkout"
-
 
 #   extract:  Extract most know archives with one command
 extract () {
@@ -182,6 +179,5 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
-
-
+eval "$(fzf --zsh)"
+eval "$(zoxide init zsh)"
