@@ -129,21 +129,21 @@ require('lazy').setup({
     },
   },
   -- -- lazy.nvim
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    opts = {
-      -- add any options here
-    },
-    dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
-      }
-  },
+  -- {
+  --   "folke/noice.nvim",
+  --   event = "VeryLazy",
+  --   opts = {
+  --     -- add any options here
+  --   },
+  --   dependencies = {
+  --     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+  --     "MunifTanjim/nui.nvim",
+  --     -- OPTIONAL:
+  --     --   `nvim-notify` is only needed, if you want to use the notification view.
+  --     --   If not available, we use `mini` as the fallback
+  --     "rcarriga/nvim-notify",
+  --     }
+  -- },
   -- Useful plugin to show you pending keybinds.
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -165,7 +165,6 @@ require('lazy').setup({
       end,
     },
   },
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -523,7 +522,24 @@ end
 -- Treesitter
 local treesitter = require "nvim-treesitter"
 treesitter.setup {
-  ensure_installed = { "python", "lua", "vim", "vimdoc", "rust", "json", "markdown", "yaml", "toml", "query" },
+  ensure_installed = { 
+    "python", 
+    "lua", 
+    "vim", 
+    "vimdoc", 
+    "rust", 
+    "json", 
+    "markdown", 
+    "erlang", 
+    "yaml", 
+    "toml", 
+    "query", 
+    "elixir", 
+    "go", 
+    "eex", 
+    "heex" 
+  },
+  auto_install = true,
   highlight = {
     enable = true
   }
@@ -558,24 +574,24 @@ local servers = {
 }
 
 -- Noice setup
-require("noice").setup({
-  lsp = {
-    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-    override = {
-      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-      ["vim.lsp.util.stylize_markdown"] = true,
-      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
-    },
-  },
-  -- you can enable a preset for easier configuration
-  presets = {
-    bottom_search = true, -- use a classic bottom cmdline for search
-    command_palette = true, -- position the cmdline and popupmenu together
-    long_message_to_split = true, -- long messages will be sent to a split
-    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-    lsp_doc_border = false, -- add a border to hover docs and signature help
-  },
-})
+--require("noice").setup({
+--  lsp = {
+--    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+--    override = {
+--      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+--      ["vim.lsp.util.stylize_markdown"] = true,
+--      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+--    },
+--  },
+--  -- you can enable a preset for easier configuration
+--  presets = {
+--    bottom_search = true, -- use a classic bottom cmdline for search
+--    command_palette = true, -- position the cmdline and popupmenu together
+--    long_message_to_split = true, -- long messages will be sent to a split
+--    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+--    lsp_doc_border = false, -- add a border to hover docs and signature help
+--  },
+--})
 
 -- Setup neovim lua configuration
 require('neodev').setup()

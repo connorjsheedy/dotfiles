@@ -7,6 +7,7 @@ path=(
     $HOME/bin
     $SCRIPTS
     $HOME/.local/bin
+    $HOME/go/bin
     $HOME/.cargo/bin
     $HOME/.npm-global/bin
 )
