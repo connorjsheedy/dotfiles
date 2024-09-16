@@ -1,5 +1,5 @@
 import = [
-    "~/.config/alacritty/themes/catppuccin-mocha.toml"
+    "~/.config/alacritty/themes/rose-pine.toml"
 ]
 
 live_config_reload = true
@@ -23,8 +23,8 @@ blink_timeout = 5
 unfocused_hollow = false
 
 [cursor.style]
-blinking = "Off"
-shape = "Block"
+blinking = "On"
+shape = "Beam"
 
 [mouse]
 hide_when_typing = true

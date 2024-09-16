@@ -23,6 +23,7 @@ export PATH
 set -o vi
 
 export EDITOR='nvim'
+export SHELL="/bin/zsh"
 
 export WORK="$HOME/ensodata"
 export BROWSER='arc'
@@ -36,15 +37,20 @@ export LIBRARY_PATH="$LIBRARY_PATH:/Library/Developer/CommandLineTools/SDKs/MacO
 export WORKENV="$WORK/.environ"
 export XDG_CONFIG_HOME="$HOME"/.config
 
+# ~~~~~~~~~~~~~~~~~~~~~ Homebrew ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~ OMZ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=""
 # ZSH_THEME="arrow" # set by `omz`
 
 zstyle ':omz:update' mode auto      # update automatically without asking
 
-plugins=(git thefuck python zsh-autosuggestions)
+plugins=(git python zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -58,12 +64,6 @@ SAVEHIST=100000
 setopt HIST_IGNORE_SPACE
 setopt HIST_IGNORE_DUPS
 setopt SHARE_HISTORY
-
-# ~~~~~~~~~~~~~~~~~~~~~~ Pyenv ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~ Prompt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,6 +133,20 @@ vif () {
    VFILE=$(fzf --preview='bat --color=always {}')
    [[ -n ${VFILE} ]] && echo "${VFILE}" && nvim "${VFILE}"
 }
+# Bitwarden
+
+# Unlock Vault and set session env variable
+bwss() {
+ eval $(bw unlock | grep export | awk -F"\$" {'print $2'})
+}
+
+alias bwll="bw list items | jq '.[] | .name' | grep"
+alias bwg="bw get item"
+
+# Set environment variables from item
+bwe(){
+    eval $(bw get item $1 | jq -r '.notes')
+}
 
 # Brew
 
@@ -173,13 +187,16 @@ extract () {
 if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
 
-# ~~~~~~~~~~~~~~~~~~~~~ Homebrew ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~ FZF ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --zsh)"
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Zoxide ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 eval "$(zoxide init zsh)"
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Zoxide ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+eval "$(bw completion --shell zsh); compdef _bw bw;"
