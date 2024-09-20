@@ -112,7 +112,7 @@ require('lazy').setup({
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim', config = true },
+      { 'williamboman/mason.nvim', config = true},
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
@@ -123,6 +123,8 @@ require('lazy').setup({
       'folke/neodev.nvim',
     },
   },
+  -- Null ls for black formatting
+  "jose-elias-alvarez/null-ls.nvim",
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -342,6 +344,9 @@ require('lazy').setup({
         return string.format("![%s](%s)", path.name, path)
       end,
     },
+    spec = {
+      { import = "lazyvim.plugins.extras.lang.python" },
+    },
   }
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -406,6 +411,7 @@ vim.o.termguicolors = true
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -556,6 +562,7 @@ treesitter.setup {
   }
 
 }
+
 vim.treesitter.language.register('elixir', { 'ex', 'exs' })
 
 -- Tmux setup
@@ -573,7 +580,6 @@ vim.keymap.set("n", "<leader>oi", "<cmd>PyrightOrganizeImports<cr>")
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
@@ -585,6 +591,24 @@ local servers = {
     },
   },
 }
+-- Autosave and format with Black
+vim.api.nvim_create_autocmd("BufWritePost",
+ {
+   pattern="*.py",
+   callback= function ()
+      vim.lsp.buf.format()
+   end,
+ }
+)
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.formatting.ruff,
+    null_ls.builtins.formatting.black,
+  },
+})
 
 -- Noice setup
 --require("noice").setup({
