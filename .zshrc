@@ -148,6 +148,11 @@ bwe(){
     eval $(bw get item $1 | jq -r '.notes')
 }
 
+# Set variables based on current .env file
+bwce(){
+  bw get template item | jq --arg a "$(cat .env)" --arg b "$1" '.type = 2 | .secureNote.type = 0 | .notes = $a | .name = $b' | bw  encode | bw create item
+}
+
 # Brew
 
 alias bu='brew update && brew upgrade && brew cleanup'
