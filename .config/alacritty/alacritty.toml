@@ -12,6 +12,7 @@ args = ["-l"]
 padding = {"x" = 5, "y" = 5}
 startup_mode = "Fullscreen"
 opacity = 1.0
+decorations = "None"
 
 [font]
 size = 12.0

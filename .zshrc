@@ -9,7 +9,7 @@ path=(
     $HOME/.local/bin
     $HOME/go/bin
     $HOME/.cargo/bin
-    $HOME/.npm-global/bin
+    $HOME/.pyenv/bin
 )
 
 # Remove duplicates and non-entries
@@ -36,6 +36,16 @@ export LIBRARY_PATH="$LIBRARY_PATH:/Library/Developer/CommandLineTools/SDKs/MacO
 
 export WORKENV="$WORK/.environ"
 export XDG_CONFIG_HOME="$HOME"/.config
+
+# ~~~~~~~~~~~~~~~~~~~~~~ pyenv ~~~~~~~~~~~~~~~~~~~~~~~~~~
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# ~~~~~~~~~~~~~~~~~~~~~~ nvim ~~~~~~~~~~~~~~~~~~~~~~~~~~
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # ~~~~~~~~~~~~~~~~~~~~~ Homebrew ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -164,6 +174,7 @@ alias gl="git log --graph --format=format:'%C(bold blue)%h%C(reset) - %C(bold gr
 "
 alias gr="git rebase -i"
 alias gc="git checkout"
+alias gs="git status"
 
 #   extract:  Extract most know archives with one command
 extract () {
@@ -205,3 +216,7 @@ eval "$(zoxide init zsh)"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Zoxide ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 eval "$(bw completion --shell zsh); compdef _bw bw;"
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
