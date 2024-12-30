@@ -197,6 +197,10 @@ require('lazy').setup({
           name = "music",
           path = "~/music_notes",
         },
+        {
+          name = "notes",
+          path = "~/notes",
+        },
       },
       -- see below for full list of options 👇
     },
