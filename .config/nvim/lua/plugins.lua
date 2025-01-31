@@ -1,10 +1,8 @@
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
   "supermaven-inc/supermaven-nvim",
-  'ThePrimeagen/vim-be-good',
   -- Git related plugins
   'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
   -- File/project manager
   'ThePrimeagen/harpoon',
   -- Detect tabstop and shiftwidth automatically

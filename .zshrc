@@ -19,7 +19,6 @@ path=($^path(N-/))
 export PATH
 
 # ~~~~~~~~~~~~~~~~~ Environment Variables ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 set -o vi
 
 export EDITOR='nvim'
@@ -35,7 +34,7 @@ export MANPATH=$(manpath)
 export LIBRARY_PATH="$LIBRARY_PATH:/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"
 
 export WORKENV="$WORK/.environ"
-export XDG_CONFIG_HOME="$HOME"/.config
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # ~~~~~~~~~~~~~~~~~~~~~~ pyenv ~~~~~~~~~~~~~~~~~~~~~~~~~~
 export PYENV_ROOT="$HOME/.pyenv"
@@ -58,7 +57,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 # ZSH_THEME="arrow" # set by `omz`
 
-zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode disabled     # update automatically without asking
 
 plugins=(git python zsh-autosuggestions)
 
@@ -67,7 +66,7 @@ source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # ~~~~~~~~~~~~~~~~~~~~~~ History ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-HISTFILE=~/.zsh_history
+HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
 SAVEHIST=100000
 
@@ -98,11 +97,9 @@ alias py="python"
 alias c="clear"
 
 # Enso Alias 
-
-alias enso='cd ~/ensodata'
+alias enso="cd '$WORK'"
 
 # Python package managers and virtual environement creation
-
 alias vnv='source venv/bin/activate'
 alias vn3='source venv3/bin/activate'
 alias penv='pipenv shell'
@@ -110,7 +107,6 @@ alias psh='poetry shell'
 alias pu='poetry update'
 
 # Directory Navigation
-
 alias la='ls -a'
 alias ll='ls -FGlAhp'
 alias mem='top -o mem'
@@ -138,7 +134,6 @@ bd () {
 }
 
 # Christian's bad ass prompt for opening any file, previewing and then launching nvim
-
 vif () {
    VFILE=$(fzf --preview='bat --color=always {}')
    [[ -n ${VFILE} ]] && echo "${VFILE}" && nvim "${VFILE}"
@@ -213,10 +208,5 @@ eval "$(fzf --zsh)"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Zoxide ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 eval "$(zoxide init zsh)"
 
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Zoxide ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Bitwarden ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 eval "$(bw completion --shell zsh); compdef _bw bw;"
-
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
