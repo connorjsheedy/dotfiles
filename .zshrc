@@ -9,7 +9,7 @@ path=(
     $HOME/.local/bin
     $HOME/go/bin
     $HOME/.cargo/bin
-    $HOME/.pyenv/bin
+    /opt/homebrew/bin
 )
 
 # Remove duplicates and non-entries
@@ -37,9 +37,7 @@ export WORKENV="$WORK/.environ"
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # ~~~~~~~~~~~~~~~~~~~~~~ pyenv ~~~~~~~~~~~~~~~~~~~~~~~~~~
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+eval "$(pyenv init - zsh)"
 
 # ~~~~~~~~~~~~~~~~~~~~~~ nvim ~~~~~~~~~~~~~~~~~~~~~~~~~~
 export NVM_DIR="$HOME/.config/nvm"
@@ -203,7 +201,6 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-clou
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --zsh)"
-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Zoxide ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 eval "$(zoxide init zsh)"
