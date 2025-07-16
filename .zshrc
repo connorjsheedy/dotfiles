@@ -1,4 +1,5 @@
 # ~~~~~~~~~~~~~~~~~~~ Path Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# zmodload zsh/zprof
 
 setopt extended_glob null_glob
 
@@ -40,26 +41,26 @@ export XDG_CONFIG_HOME="$HOME/.config"
 eval "$(pyenv init - zsh)"
 
 # ~~~~~~~~~~~~~~~~~~~~~~ nvim ~~~~~~~~~~~~~~~~~~~~~~~~~~
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Incredibly slow - Only use if necessary
+# export NVM_DIR="$HOME/.config/nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # ~~~~~~~~~~~~~~~~~~~~~ Homebrew ~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~ OMZ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME=""
-# ZSH_THEME="arrow" # set by `omz`
-
-zstyle ':omz:update' mode disabled     # update automatically without asking
-
-plugins=(git python zsh-autosuggestions)
-
-source $ZSH/oh-my-zsh.sh
+# export ZSH="$HOME/.oh-my-zsh"
+# ZSH_THEME=""
+# # ZSH_THEME="arrow" # set by `omz`
+#
+# zstyle ':omz:update' mode disabled     # update automatically without asking
+#
+# plugins=(git python zsh-autosuggestions)
+#
+# source $ZSH/oh-my-zsh.sh
 source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # ~~~~~~~~~~~~~~~~~~~~~~ History ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -101,8 +102,8 @@ alias enso="cd '$WORK'"
 alias vnv='source venv/bin/activate'
 alias vn3='source venv3/bin/activate'
 alias penv='pipenv shell'
-alias psh='poetry shell'
 alias pu='poetry update'
+alias pshell='poetry env activate'
 
 # Directory Navigation
 alias la='ls -a'
@@ -111,7 +112,6 @@ alias mem='top -o mem'
 alias memHogsTop='top -l 1 -o rsize | head -20'
 alias memHogsPs='ps wwaxm -o pid,stpat,vsize,rss,time,command | head -10'
 alias ~="cd ~"                              # ~:            Go Home
-alias rmgz="~/ensodata/scripts/remove_gz.sh" # Remove the gz extension
 alias dl='cd ~/Downloads'
 alias dt='cd ~/Desktop'
 
@@ -194,7 +194,7 @@ extract () {
 # ~~~~~~~~~~~~~~~~~~~~~~ gsutil ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+export GOOGLE_CLOUD_PROJECT="ensodata-hipaa-production"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~ FZF ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -205,5 +205,11 @@ eval "$(fzf --zsh)"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Zoxide ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 eval "$(zoxide init zsh)"
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Bitwarden ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-eval "$(bw completion --shell zsh); compdef _bw bw;"
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Yazi ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}

@@ -11,6 +11,11 @@ require('lazy').setup({
   "aserowy/tmux.nvim",
   "mbbill/undotree",
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    cmd = { 'RenderMarkdown' },
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
+  },
+  {
     'stevearc/oil.nvim',
     opts = {},
     -- Optional dependencies
@@ -57,8 +62,6 @@ require('lazy').setup({
       'folke/neodev.nvim',
     },
   },
-  -- Null ls for black formatting
-  "jose-elias-alvarez/null-ls.nvim",
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -74,22 +77,6 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
-  -- -- lazy.nvim
-  -- {
-  --   "folke/noice.nvim",
-  --   event = "VeryLazy",
-  --   opts = {
-  --     -- add any options here
-  --   },
-  --   dependencies = {
-  --     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-  --     "MunifTanjim/nui.nvim",
-  --     -- OPTIONAL:
-  --     --   `nvim-notify` is only needed, if you want to use the notification view.
-  --     --   If not available, we use `mini` as the fallback
-  --     "rcarriga/nvim-notify",
-  --     }
-  -- },
   -- Useful plugin to show you pending keybinds.
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -124,14 +111,6 @@ require('lazy').setup({
       },
     },
   },
-  -- {
-  --   "catppuccin/nvim",
-  --   name = "catppuccin",
-  --   priority = 1000,
-  --   config = function()
-  --     vim.cmd.colorscheme 'catppuccin'
-  --   end,
-  -- },
   { "rose-pine/neovim",                    name = "rose-pine" },
   { "lukas-reineke/indent-blankline.nvim", main = "ibl",      opts = {} },
   -- "gc" to comment visual regions/lines
@@ -226,43 +205,7 @@ require('lazy').setup({
       }
     },
     ui = {
-      enable = true,         -- set to false to disable all additional syntax features
-      update_debounce = 200, -- update delay after a text change (in milliseconds)
-      -- Define how various check-boxes are displayed
-      checkboxes = {
-        -- NOTE: the 'char' value has to be a single character, and the highlight groups are defined below.
-        [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
-        ["x"] = { char = "", hl_group = "ObsidianDone" },
-        [">"] = { char = "", hl_group = "ObsidianRightArrow" },
-        ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
-        -- Replace the above with this if you don't have a patched font:
-        -- [" "] = { char = "☐", hl_group = "ObsidianTodo" },
-        -- ["x"] = { char = "✔", hl_group = "ObsidianDone" },
-
-        -- You can also add more custom ones...
-      },
-      -- Use bullet marks for non-checkbox lists.
-      bullets = { char = "•", hl_group = "ObsidianBullet" },
-      external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-      -- Replace the above with this if you don't have a patched font:
-      -- external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-      reference_text = { hl_group = "ObsidianRefText" },
-      highlight_text = { hl_group = "ObsidianHighlightText" },
-      tags = { hl_group = "ObsidianTag" },
-      block_ids = { hl_group = "ObsidianBlockID" },
-      hl_groups = {
-        -- The options are passed directly to `vim.api.nvim_set_hl()`. See `:help nvim_set_hl`.
-        ObsidianTodo = { bold = true, fg = "#f78c6c" },
-        ObsidianDone = { bold = true, fg = "#89ddff" },
-        ObsidianRightArrow = { bold = true, fg = "#f78c6c" },
-        ObsidianTilde = { bold = true, fg = "#ff5370" },
-        ObsidianBullet = { bold = true, fg = "#89ddff" },
-        ObsidianRefText = { underline = true, fg = "#c792ea" },
-        ObsidianExtLinkIcon = { fg = "#c792ea" },
-        ObsidianTag = { italic = true, fg = "#89ddff" },
-        ObsidianBlockID = { italic = true, fg = "#89ddff" },
-        ObsidianHighlightText = { bg = "#75662e" },
-      },
+      enable = false,
     },
 
     -- Specify how to handle attachments.
@@ -285,6 +228,16 @@ require('lazy').setup({
     spec = {
       { import = "lazyvim.plugins.extras.lang.python" },
     },
+  },
+  {
+      "mason-org/mason-lspconfig.nvim",
+      opts = {
+        ensure_installed = {"lua_ls", "pylsp", "ruff"}
+      },
+      dependencies = {
+          { "mason-org/mason.nvim", opts = {} },
+          "neovim/nvim-lspconfig",
+      },
   }
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
