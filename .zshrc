@@ -26,7 +26,7 @@ export EDITOR='nvim'
 export SHELL="/bin/zsh"
 
 export WORK="$HOME/ensodata"
-export BROWSER='arc'
+export BROWSER='zen'
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/scripts"
 
@@ -50,17 +50,7 @@ eval "$(pyenv init - zsh)"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~ OMZ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Path to your oh-my-zsh installation.
-# export ZSH="$HOME/.oh-my-zsh"
-# ZSH_THEME=""
-# # ZSH_THEME="arrow" # set by `omz`
-#
-# zstyle ':omz:update' mode disabled     # update automatically without asking
-#
-# plugins=(git python zsh-autosuggestions)
-#
-# source $ZSH/oh-my-zsh.sh
+# ~~~~~~~~~~~~~~~~~~~~~ Highlighting ~~~~~~~~~~~~~~~~~~~~~~~~~~
 source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # ~~~~~~~~~~~~~~~~~~~~~~ History ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -74,7 +64,7 @@ setopt HIST_IGNORE_DUPS
 setopt SHARE_HISTORY
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~ Prompt ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~ Prompt - Pure ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PURE_GIT_PULL=0
 
