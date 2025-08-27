@@ -40,7 +40,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # ~~~~~~~~~~~~~~~~~~~~~~ pyenv ~~~~~~~~~~~~~~~~~~~~~~~~~~
 eval "$(pyenv init - zsh)"
 
-# ~~~~~~~~~~~~~~~~~~~~~~ nvim ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~ nvm ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Incredibly slow - Only use if necessary
 # export NVM_DIR="$HOME/.config/nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -93,7 +93,6 @@ alias vnv='source venv/bin/activate'
 alias vn3='source venv3/bin/activate'
 alias penv='pipenv shell'
 alias pu='poetry update'
-alias pshell='poetry env activate'
 
 # Directory Navigation
 alias la='ls -a'
@@ -184,7 +183,6 @@ extract () {
 # ~~~~~~~~~~~~~~~~~~~~~~ gsutil ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
-export GOOGLE_CLOUD_PROJECT="ensodata-hipaa-production"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~ FZF ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
