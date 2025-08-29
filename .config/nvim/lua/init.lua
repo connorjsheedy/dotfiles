@@ -1,7 +1,7 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
-vim.opt.conceallevel = 1
+vim.o.conceallevel = 1
 
 -- [[ Setting options ]]
 
@@ -42,5 +42,6 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
-
-
+-- vim.o.wrap = true
+-- vim.o.linebreak = true
+-- vim.o.tw = 88

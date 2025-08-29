@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+
+# Get the path to the current Poetry virtual environment
+VENV_PATH=$(poetry env info -p)
+
+# Determine the site-packages directory within the virtual environment
+# This assumes a standard Python layout within the venv
+SITE_PACKAGES_PATH="${VENV_PATH}/lib/python$(poetry run python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')/site-packages"
+
+# Export the PYTHONPATH to include the site-packages directory
+export PYTHONPATH="${SITE_PACKAGES_PATH}:${PYTHONPATH}"
+
+echo "PYTHONPATH set to: ${PYTHONPATH}"
