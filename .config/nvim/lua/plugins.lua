@@ -1,19 +1,68 @@
 require('lazy').setup({
-    -- NOTE: First, some plugins that don't require any configuration
-    -- Git related plugins
-    'tpope/vim-fugitive',
-    -- File/project manager
-    'ThePrimeagen/harpoon',
-    -- Detect tabstop and shiftwidth automatically
-    'tpope/vim-sleuth',
-    --Tmux supports
-    "aserowy/tmux.nvim",
-    "mbbill/undotree",
-    {
-      'MeanderingProgrammer/render-markdown.nvim',
-      cmd = { 'RenderMarkdown' },
-      dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
+  -- NOTE: First, some plugins that don't require any configuration
+  "supermaven-inc/supermaven-nvim",
+  -- Git related plugins
+  'tpope/vim-fugitive',
+  -- File/project manager
+  'ThePrimeagen/harpoon',
+  -- Detect tabstop and shiftwidth automatically
+  'tpope/vim-sleuth',
+  --Tmux supports
+  "aserowy/tmux.nvim",
+  "mbbill/undotree",
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    cmd = { 'RenderMarkdown' },
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("oil").setup({
+        delete_to_trash = true,
+        skip_confirm_for_simple_edits = true,
+        view_options = {
+          show_hidden = true,
+          natural_order = true,
+          is_always_hidden = function(name, _)
+            return name == '..' or name == '.git'
+          end
+        }
+      })
+    end,
+  },
+  { 'nvim-mini/mini.surround', version = false },
+  -- {
+  --   "kylechui/nvim-surround",
+  --   version = "*", -- Use for stability; omit to use `main` branch for the latest features
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("nvim-surround").setup({
+  --       -- Configuration here, or leave empty to use defaults
+  --     })
+  --   end
+  -- },
+  -- NOTE: This is where your plugins related to LSP can be installed.
+  --  The configuration is done below. Search for lspconfig to find it below.
+  {
+    -- LSP Configuration & Plugins
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      -- Automatically install LSPs to stdpath for neovim
+      { 'williamboman/mason.nvim', config = true },
+      'williamboman/mason-lspconfig.nvim',
+
+      -- Useful status updates for LSP
+      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
+
+      -- Additional lua configuration, makes nvim stuff amazing!
+      'folke/neodev.nvim',
     },
+	},
     {
       'stevearc/oil.nvim',
       opts = {},
