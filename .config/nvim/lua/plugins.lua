@@ -1,50 +1,30 @@
 require('lazy').setup({
-  "supermaven-inc/supermaven-nvim",
-  -- Git related plugins
-  'tpope/vim-fugitive',
-  -- File/project manager
-  'ThePrimeagen/harpoon',
-  -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
-  --Tmux supports
-  "aserowy/tmux.nvim",
-  "mbbill/undotree",
-  {
-    'stevearc/oil.nvim',
-    opts = {},
-    -- Optional dependencies
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("oil").setup({
-        delete_to_trash = true,
-        skip_confirm_for_simple_edits = true,
-        view_options = {
-          show_hidden = true,
-          natural_order = true,
-          is_always_hidden = function(name, _)
-            return name == '..' or name == '.git'
-          end
-        }
-      })
-    end,
-  },
-  { 'nvim-mini/mini.surround', version = false },
-  {
-    -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim', config = true },
-      'williamboman/mason-lspconfig.nvim',
-
-      -- Useful status updates for LSP
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
-
-      -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim',
+    -- NOTE: First, some plugins that don't require any configuration
+    -- Git related plugins
+    'tpope/vim-fugitive',
+    -- File/project manager
+    'ThePrimeagen/harpoon',
+    -- Detect tabstop and shiftwidth automatically
+    'tpope/vim-sleuth',
+    --Tmux supports
+    "aserowy/tmux.nvim",
+    "mbbill/undotree",
+    'echasnovski/mini.nvim',
+    -- lazy.nvim
+    {
+      "olimorris/codecompanion.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+      },
+      opts = {
+        -- NOTE: The log_level is in `opts.opts`
+        opts = {
+          log_level = "DEBUG", -- or "TRACE"
+        },
+      },
     },
-    },
+    { 'nvim-mini/mini.surround', version = false },
     {
       'stevearc/oil.nvim',
       opts = {},
@@ -67,8 +47,7 @@ require('lazy').setup({
     -- NOTE: This is where your plugins related to LSP can be installed.
     --  The configuration is done below. Search for lspconfig to find it below.
     {
-      -- LSP Configuration & Plugins
-      'neovim/nvim-lspconfig',
+      "neovim/nvim-lspconfig",
       dependencies = {
         -- Automatically install LSPs to stdpath for neovim
         { 'williamboman/mason.nvim', config = true },
@@ -238,6 +217,44 @@ require('lazy').setup({
       },
     },
     {
+      'saghen/blink.cmp',
+      -- optional: provides snippets for the snippet source
+      dependencies = { 'rafamadriz/friendly-snippets' },
+
+      -- use a release tag to download pre-built binaries
+      version = '1.*',
+      -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+      -- build = 'cargo build --release',
+      -- If you use nix, you can build from source using latest nightly rust with:
+      -- build = 'nix run .#build-plugin',
+
+      ---@module 'blink.cmp'
+      ---@type blink.cmp.Config
+      opts = {
+        -- See :h blink-cmp-config-keymap for defining your own keymap
+        keymap = { preset = 'default' },
+
+        appearance = {
+          -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+          -- Adjusts spacing to ensure icons are aligned
+          nerd_font_variant = 'mono'
+        },
+
+        -- (Default) Only show the documentation popup when manually triggered
+        completion = { documentation = { auto_show = false } },
+
+        -- Default list of enabled providers defined so that you can extend it
+        -- elsewhere in your config, without redefining it, due to `opts_extend`
+        sources = {
+          default = { 'lsp', 'path', 'snippets', 'buffer' },
+        },
+
+        -- See the fuzzy documentation for more information
+        fuzzy = { implementation = "prefer_rust_with_warning" }
+      },
+      opts_extend = { "sources.default" }
+    },
+    {
       "mason-org/mason-lspconfig.nvim",
       opts = {
         ensure_installed = { "lua_ls", "pylsp", "ruff" }
@@ -246,6 +263,6 @@ require('lazy').setup({
         { "mason-org/mason.nvim", opts = {} },
         "neovim/nvim-lspconfig",
       },
-    }
+    },
   },
   {})

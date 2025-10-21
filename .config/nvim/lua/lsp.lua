@@ -1,5 +1,8 @@
 vim.lsp.enable({ "lua_ls", "pylsp", "luasnip" })
 
+local capabilities = require('blink.cmp').get_lsp_capabilities()
+vim.lsp.config("*", { capabilities = capabilities })
+
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('my.lsp', {}),
   callback = function(ev)
@@ -18,8 +21,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0 })
       vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, { buffer = 0 })
       vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = 0 })
-
-      vim.keymap.set("n", "<space>cr", vim.lsp.buf.rename, { buffer = 0 })
       vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, { buffer = 0 })
       vim.keymap.set("n", "<space>wd", builtin.lsp_document_symbols, { buffer = 0 })
       vim.keymap.set("n", '<leader>rn', vim.lsp.buf.rename, { buffer = 0 })
@@ -42,25 +43,20 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.diagnostic.config({
-
   virtual_lines = {
     current_line = true
   }
 })
 
 local cmp = require "cmp"
-cmp.setup({
+cmp.setup {
   snippet = {
     -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      -- require('luasnip').lsp_expand(args.body)      -- For `luasnip` users.
+      require('luasnip').lsp_expand(args.body)      -- For `luasnip` users.
       require('snippy').expand_snippet(args.body)   -- For `snippy` users.
       vim.snippet.expand(args.body)                 -- For native neovim snippets (Neovim v0.10+)
     end,
-  },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -71,9 +67,10 @@ cmp.setup({
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
-    -- { name = 'luasnip' }, -- For luasnip users.
-    { name = 'snippy' },
-  }, {
+    { name = 'luasnip' }, -- For luasnip users.
+    { name = 'blink' }, -- For luasnip users.
+    -- { name = 'snippy' },
+    { name = "codecompanion"},
     { name = 'buffer' },
   })
-})
+}

@@ -104,4 +104,3 @@ vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv") --Config Lua Line
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv") --Config Lua Line
 
 vim.keymap.set('x', '<leader>pp', "\"_dP")   --Config Lua Line
-
