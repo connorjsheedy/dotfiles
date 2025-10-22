@@ -1,4 +1,4 @@
-vim.lsp.enable({ "lua_ls", "pylsp", "luasnip" })
+vim.lsp.enable({ "lua_ls", "pylsp", "luasnip", "codecompanion"})
 
 local capabilities = require('blink.cmp').get_lsp_capabilities()
 vim.lsp.config("*", { capabilities = capabilities })

@@ -9,6 +9,6 @@ VENV_PATH=$(poetry env info -p)
 SITE_PACKAGES_PATH="${VENV_PATH}/lib/python$(poetry run python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')/site-packages"
 
 # Export the PYTHONPATH to include the site-packages directory
-export PYTHONPATH="${SITE_PACKAGES_PATH}:${PYTHONPATH}"
+export PYTHONPATH="${SITE_PACKAGES_PATH}"
 
 echo "PYTHONPATH set to: ${PYTHONPATH}"

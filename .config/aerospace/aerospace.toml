@@ -207,6 +207,10 @@ alt-shift-l = ['join-with right', 'mode main']
     run = 'move-node-to-workspace A'
 
 [[on-window-detected]]
+    if.app-id = 'com.tinyspeck.slackmacgap'
+    run = 'move-node-to-workspace S'
+
+[[on-window-detected]]
     if.app-id = 'app.zen-browser.zen'
     run = 'move-node-to-workspace W'
 
@@ -217,4 +221,16 @@ alt-shift-l = ['join-with right', 'mode main']
 [[on-window-detected]]
     if.app-id = 'com.apple.MobileSMS'
     run = 'move-node-to-workspace 1' 
+
+[[on-window-detected]]
+    if.app-id = 'com.postmanlabs.mac'
+    run = 'move-node-to-workspace P'
+
+[[on-window-detected]]
+    if.app-id = 'com.bitwarden.desktop'
+    run = 'move-node-to-workspace B'
+
+[[on-window-detected]]
+    if.app-id = 'com.install4j.0526-4458-1435-8154.837'
+    run = 'move-node-to-workspace D'
 
