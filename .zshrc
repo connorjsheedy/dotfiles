@@ -10,6 +10,7 @@ path=(
     $HOME/.local/bin
     $HOME/go/bin
     $HOME/.cargo/bin
+    $HOME/.pyenv/shims
     /opt/homebrew/bin
 )
 
@@ -86,13 +87,11 @@ alias py="python"
 alias c="clear"
 
 # Enso Alias 
-alias enso="cd '$WORK'"
+alias work="cd '$WORK'"
 
-# Python package managers and virtual environement creation
+# Python package managers and virtual environment creation
 alias vnv='source venv/bin/activate'
 alias vn3='source venv3/bin/activate'
-alias penv='pipenv shell'
-alias pu='poetry update'
 
 # Directory Navigation
 alias la='ls -a'
