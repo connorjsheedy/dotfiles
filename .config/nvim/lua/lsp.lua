@@ -15,7 +15,7 @@ end
 check_for_poetry_lock()
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 vim.lsp.config("*", { capabilities = capabilities })
-vim.lsp.enable({ "lua_ls", "pylsp", "luasnip" })
+vim.lsp.enable({ "lua_ls", "pylsp", "luasnip", "ty" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("my.lsp", {}),

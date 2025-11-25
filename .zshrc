@@ -1,5 +1,6 @@
 # ~~~~~~~~~~~~~~~~~~~ Path Configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # zmodload zsh/zprof
+autoload -U +X compinit && compinit
 
 setopt extended_glob null_glob
 
@@ -11,8 +12,10 @@ path=(
     $HOME/go/bin
     $HOME/.cargo/bin
     $HOME/.pyenv/shims
+    $HOME/.antigravity/antigravity/bin
     /opt/homebrew/bin
 )
+
 
 # Remove duplicates and non-entries
 typeset -U path
@@ -30,6 +33,7 @@ export WORK="$HOME/ensodata"
 export BROWSER='zen'
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/scripts"
+export NOTES="$WORK/projects"
 
 export MANPATH=$(manpath)
 
@@ -37,6 +41,7 @@ export LIBRARY_PATH="$LIBRARY_PATH:/Library/Developer/CommandLineTools/SDKs/MacO
 
 export WORKENV="$WORK/.environ"
 export XDG_CONFIG_HOME="$HOME/.config"
+export TMS_CONFIG_FILE="$DOTFILES/.config/tms/config.toml"
 
 # ~~~~~~~~~~~~~~~~~~~~~~ pyenv ~~~~~~~~~~~~~~~~~~~~~~~~~~
 eval "$(pyenv init - zsh)"
@@ -200,3 +205,6 @@ function y() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~ TMS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+source <(COMPLETE=zsh tms)

@@ -58,8 +58,8 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 inner.horizontal = 10
 inner.vertical =   10
 outer.left =       10
-outer.bottom =     50
-outer.top =        50
+outer.bottom =     30
+outer.top =        30
 outer.right =      10
 
 # 'main' binding mode declaration
