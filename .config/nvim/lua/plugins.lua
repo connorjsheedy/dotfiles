@@ -12,21 +12,74 @@ require("lazy").setup({
 	{ "nvim-mini/mini.nvim", version = "*" },
 	-- lazy.nvim
 	{
-		"stevearc/conform.nvim",
-		opts = {},
-	},
-	{
-		"olimorris/codecompanion.nvim",
+		"nickjvandyke/opencode.nvim",
+		version = "*", -- Latest stable release
 		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		opts = {
-			-- NOTE: The log_level is in `opts.opts`
-			opts = {
-				log_level = "DEBUG", -- or "TRACE"
+			{
+				-- `snacks.nvim` integration is recommended, but optional
+				---@module "snacks" <- Loads `snacks.nvim` types for configuration intellisense
+				"folke/snacks.nvim",
+				optional = true,
+				opts = {
+					input = {}, -- Enhances `ask()`
+					picker = { -- Enhances `select()`
+						actions = {
+							opencode_send = function(...)
+								return require("opencode").snacks_picker_send(...)
+							end,
+						},
+						win = {
+							input = {
+								keys = {
+									["<a-a>"] = { "opencode_send", mode = { "n", "i" } },
+								},
+							},
+						},
+					},
+				},
 			},
 		},
+		config = function()
+			---@type opencode.Opts
+			vim.g.opencode_opts = {
+				-- Your configuration, if any; goto definition on the type or field for details
+			}
+
+			vim.o.autoread = true -- Required for `opts.events.reload`
+
+			-- Recommended/example keymaps
+			vim.keymap.set({ "n", "x" }, "<C-a>", function()
+				require("opencode").ask("@this: ", { submit = true })
+			end, { desc = "Ask opencode…" })
+			vim.keymap.set({ "n", "x" }, "<C-x>", function()
+				require("opencode").select()
+			end, { desc = "Execute opencode action…" })
+			vim.keymap.set({ "n", "t" }, "<C-.>", function()
+				require("opencode").toggle()
+			end, { desc = "Toggle opencode" })
+
+			vim.keymap.set({ "n", "x" }, "go", function()
+				return require("opencode").operator("@this ")
+			end, { desc = "Add range to opencode", expr = true })
+			vim.keymap.set("n", "goo", function()
+				return require("opencode").operator("@this ") .. "_"
+			end, { desc = "Add line to opencode", expr = true })
+
+			vim.keymap.set("n", "<S-C-u>", function()
+				require("opencode").command("session.half.page.up")
+			end, { desc = "Scroll opencode up" })
+			vim.keymap.set("n", "<S-C-d>", function()
+				require("opencode").command("session.half.page.down")
+			end, { desc = "Scroll opencode down" })
+
+			-- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
+			vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
+			vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+		end,
+	},
+	{
+		"stevearc/conform.nvim",
+		opts = {},
 	},
 	{ "nvim-mini/mini.surround", version = false },
 	{
@@ -63,21 +116,7 @@ require("lazy").setup({
 
 			-- Additional lua configuration, makes nvim stuff amazing!
 			"folke/neodev.nvim",
-		},
-	},
-	{
-		-- Autocompletion
-		"hrsh7th/nvim-cmp",
-		dependencies = {
-			-- Snippet Engine & its associated nvim-cmp source
-			"L3MON4D3/LuaSnip",
-			"saadparwaiz1/cmp_luasnip",
-
-			-- Adds LSP completion capabilities
-			"hrsh7th/cmp-nvim-lsp",
-
-			-- Adds a number of user-friendly snippets
-			"rafamadriz/friendly-snippets",
+			"saghen/blink.cmp",
 		},
 	},
 	-- Useful plugin to show you pending keybinds.
@@ -178,6 +217,8 @@ require("lazy").setup({
 		dependencies = {
 			-- Required.
 			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+			"nvim-treesitter/nvim-treesitter",
 
 			-- see below for full list of optional dependencies 👇
 		},
@@ -213,6 +254,24 @@ require("lazy").setup({
 				opts = { buffer = true, expr = true },
 			},
 		},
+		picker = {
+			-- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
+			name = "telescope.nvim",
+			-- Optional, configure key mappings for the picker. These are the defaults.
+			-- Not all pickers support all mappings.
+			note_mappings = {
+				-- Create a new note from your query.
+				new = "<C-x>",
+				-- Insert a link to the selected note.
+				insert_link = "<C-l>",
+			},
+			tag_mappings = {
+				-- Add tag(s) to current note.
+				tag_note = "<C-x>",
+				-- Insert a tag at the current location.
+				insert_tag = "<C-l>",
+			},
+		},
 		ui = {
 			enable = false,
 		},
@@ -236,6 +295,12 @@ require("lazy").setup({
 		},
 		spec = {
 			{ import = "lazyvim.plugins.extras.lang.python" },
+		},
+		daily_notes = {
+			-- Optional, if you keep daily notes in a separate directory.
+			folder = "~/ensodata/projects/daily_notes/",
+			-- Optional, default tags to add to each new daily note created.
+			default_tags = { "daily_notes" },
 		},
 	},
 	{
@@ -261,28 +326,13 @@ require("lazy").setup({
 				-- Adjusts spacing to ensure icons are aligned
 				nerd_font_variant = "mono",
 			},
-
-			-- (Default) Only show the documentation popup when manually triggered
-			completion = { documentation = { auto_show = false } },
-
-			-- Default list of enabled providers defined so that you can extend it
-			-- elsewhere in your config, without redefining it, due to `opts_extend`
-			sources = {
-				default = { "lsp", "path", "snippets", "buffer" },
-				per_filetype = {
-					codecompanion = { "codecompanion" },
-				},
-			},
-
-			-- See the fuzzy documentation for more information
-			fuzzy = { implementation = "prefer_rust_with_warning" },
 		},
 		opts_extend = { "sources.default" },
 	},
 	{
 		"mason-org/mason-lspconfig.nvim",
 		opts = {
-			ensure_installed = { "lua_ls", "pylsp", "ruff" },
+			ensure_installed = { "lua_ls", "pylsp", "ruff", "ty" },
 		},
 		dependencies = {
 			{ "mason-org/mason.nvim", opts = {} },

@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+if [ -z "$1" ]; then                                                                              
+  echo "Usage: $0 <python_version>"                                                               
+  echo "Example: $0 3.12"                                                                         
+  exit 1                                                                                          
+fi                                                                                                
+                                                                                                  
+PYTHON_VERSION=$1                                                                                 
+                                                                                                  
+echo "Setting pyenv local to $PYTHON_VERSION"                                                     
+pyenv local "$PYTHON_VERSION"                                                                     
+                                                                                                  
+echo "Setting poetry env use to $PYTHON_VERSION"                                                  
+poetry env use "$PYTHON_VERSION"

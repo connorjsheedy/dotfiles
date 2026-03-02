@@ -42,6 +42,24 @@ vim.o.completeopt = "menuone,noselect"
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
--- vim.o.wrap = true
--- vim.o.linebreak = true
--- vim.o.tw = 88
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function()
+		local excluded_ft = { "lua", "python", "javascript", "rust" }
+		local current_ft = vim.bo.filetype
+
+		-- Check if current filetype is in the excluded list
+		local is_excluded = false
+		for _, ft in ipairs(excluded_ft) do
+			if ft == current_ft then
+				is_excluded = true
+				break
+			end
+		end
+
+		if not is_excluded then
+			vim.opt_local.wrap = true
+		end
+	end,
+})
+vim.o.tw = 100
+vim.opt.colorcolumn = "100"

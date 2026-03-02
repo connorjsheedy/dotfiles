@@ -1,4 +1,1 @@
-search_paths=["$HOME/ensodata/enso_api/", "$HOME/ensodata/enso_data_analytics_etl/", "$HOME/ensodata/enso_react/",  "$HOME/ensodata/enso_medical_device_file/", "$HOME/ensodata/enso_data_migrations/", "$HOME/ensodata/enso_local_app/", "$HOME/ensodata/enso_integrations/", "$HOME/ensodata/enso_utils/", "$HOME/dotfiles",  "$HOME/ensodata/projects/"]
-recursive_submodules=true
-search_submodules=false
-max_depth=3
+search_paths=["$HOME/ensodata/enso_api/", "$HOME/ensodata/enso_data_analytics_etl/", "$HOME/ensodata/enso_react/",  "$HOME/ensodata/enso_medical_device_file/", "$HOME/ensodata/enso_data_migrations/", "$HOME/ensodata/enso_local_app/", "$HOME/ensodata/enso_integrations/", "$HOME/ensodata/enso_utils/", "$HOME/dotfiles", "$HOME/dotfiles/.config/nvim/","$HOME/ensodata/projects/"]

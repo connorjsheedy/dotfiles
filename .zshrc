@@ -7,12 +7,13 @@ setopt extended_glob null_glob
 path=(
     $path
     $HOME/bin
+    /usr/local/pgsql/bin
     $SCRIPTS
+    $HOME/.opencode/bin
     $HOME/.local/bin
     $HOME/go/bin
     $HOME/.cargo/bin
     $HOME/.pyenv/shims
-    $HOME/.antigravity/antigravity/bin
     /opt/homebrew/bin
 )
 
@@ -162,6 +163,41 @@ alias gr="git rebase -i"
 alias gc="git checkout"
 alias gs="git status"
 
+# Custom tmux launcher
+tm() {
+    local SESSION_NAME=$(basename "$PWD" | tr '.' '-')
+    
+    # Check if we are inside a git repository
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        # Check if the session already exists
+        if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+            # Create a new detached session, naming the first window "editor"
+            tmux new-session -d -s "$SESSION_NAME" -n "editor"
+            # Launch $EDITOR in the first window
+            tmux send-keys -t "$SESSION_NAME:1" "$EDITOR" C-m
+            
+            # Create the second window named "ai" and launch opencode
+            tmux new-window -t "$SESSION_NAME:2" -n "ai"
+            tmux send-keys -t "$SESSION_NAME:2" "opencode" C-m
+            
+            # Create the third window named "shell"
+            tmux new-window -t "$SESSION_NAME:3" -n "shell"
+            
+            # Select the first window ("editor") to be active
+            tmux select-window -t "$SESSION_NAME:1"
+        fi
+        
+        # Attach or switch to the session
+        if [[ -n "$TMUX" ]]; then
+            tmux switch-client -t "$SESSION_NAME"
+        else
+            tmux attach-session -t "$SESSION_NAME"
+        fi
+    else
+        # Not a git repo, fall back to standard tmux behavior
+        tmux
+    fi
+}
 #   extract:  Extract most know archives with one command
 extract () {
     if [ -f $1 ] ; then
@@ -208,3 +244,5 @@ function y() {
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~ TMS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 source <(COMPLETE=zsh tms)
+
+
