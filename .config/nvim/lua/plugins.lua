@@ -9,6 +9,7 @@ require("lazy").setup({
 	--Tmux supports
 	"aserowy/tmux.nvim",
 	"mbbill/undotree",
+	"folke/snacks.nvim",
 	{ "nvim-mini/mini.nvim", version = "*" },
 	-- lazy.nvim
 	{
