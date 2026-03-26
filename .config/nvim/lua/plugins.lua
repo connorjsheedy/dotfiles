@@ -6,10 +6,12 @@ require("lazy").setup({
 	"ThePrimeagen/harpoon",
 	-- Detect tabstop and shiftwidth automatically
 	"tpope/vim-sleuth",
-	--Tmux supports
+	-- Tmux support
 	"aserowy/tmux.nvim",
 	"mbbill/undotree",
-	"folke/snacks.nvim",
+	{ import = "plugins.snacks" },
+	{ import = "plugins.dap" },
+	{ import = "plugins.neotest" },
 	{ "nvim-mini/mini.nvim", version = "*" },
 	-- lazy.nvim
 	{
@@ -86,7 +88,6 @@ require("lazy").setup({
 	{
 		"stevearc/oil.nvim",
 		opts = {},
-		-- Optional dependencies
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("oil").setup({
@@ -120,7 +121,6 @@ require("lazy").setup({
 			"saghen/blink.cmp",
 		},
 	},
-	-- Useful plugin to show you pending keybinds.
 	{
 		-- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
@@ -178,27 +178,6 @@ require("lazy").setup({
 	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	-- "gc" to comment visual regions/lines
 	{ "numToStr/Comment.nvim", opts = {} },
-
-	-- Fuzzy Finder (files, lsp, etc)
-	{
-		"nvim-telescope/telescope.nvim",
-		branch = "0.1.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			-- Fuzzy Finder Algorithm which requires local dependencies to be built.
-			-- Only load if `make` is available. Make sure you have the system
-			-- requirements installed.
-			{
-				"nvim-telescope/telescope-fzf-native.nvim",
-				-- NOTE: If you are having trouble with this installation,
-				--       refer to the README for telescope-fzf-native for more instructions.
-				build = "make",
-				cond = function()
-					return vim.fn.executable("make") == 1
-				end,
-			},
-		},
-	},
 	{
 		"nvim-treesitter/nvim-treesitter",
 		opts = {},
@@ -208,20 +187,9 @@ require("lazy").setup({
 		version = "*", -- recommended, use latest release instead of latest commit
 		lazy = true,
 		ft = "markdown",
-		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-		-- event = {
-		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-		--   "BufReadPre path/to/my-vault/**.md",
-		--   "BufNewFile path/to/my-vault/**.md",
-		-- },
 		dependencies = {
-			-- Required.
 			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
 			"nvim-treesitter/nvim-treesitter",
-
-			-- see below for full list of optional dependencies 👇
 		},
 		opts = {
 			workspaces = {
@@ -230,7 +198,6 @@ require("lazy").setup({
 					path = "~/ensodata/projects",
 				},
 			},
-			-- see below for full list of options 👇
 		},
 		mappings = {
 			-- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
@@ -255,37 +222,11 @@ require("lazy").setup({
 				opts = { buffer = true, expr = true },
 			},
 		},
-		picker = {
-			-- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
-			name = "telescope.nvim",
-			-- Optional, configure key mappings for the picker. These are the defaults.
-			-- Not all pickers support all mappings.
-			note_mappings = {
-				-- Create a new note from your query.
-				new = "<C-x>",
-				-- Insert a link to the selected note.
-				insert_link = "<C-l>",
-			},
-			tag_mappings = {
-				-- Add tag(s) to current note.
-				tag_note = "<C-x>",
-				-- Insert a tag at the current location.
-				insert_tag = "<C-l>",
-			},
-		},
 		ui = {
 			enable = false,
 		},
-
-		-- Specify how to handle attachments.
 		attachments = {
-			-- The default folder to place images in via `:ObsidianPasteImg`.
-			-- If this is a relative path it will be interpreted as relative to the vault root.
-			-- You can always override this per image by passing a full path to the command instead of just a filename.
-			img_folder = "assets/imgs", -- This is the default
-			-- A function that determines the text to insert in the note when pasting an image.
-			-- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
-			-- This is the default implementation.
+			img_folder = "assets/imgs",
 			---@param client obsidian.Client
 			---@param path obsidian.Path the absolute path to the image file
 			---@return string
@@ -298,30 +239,19 @@ require("lazy").setup({
 			{ import = "lazyvim.plugins.extras.lang.python" },
 		},
 		daily_notes = {
-			-- Optional, if you keep daily notes in a separate directory.
 			folder = "~/ensodata/projects/daily_notes/",
-			-- Optional, default tags to add to each new daily note created.
 			default_tags = { "daily_notes" },
 		},
 	},
 	{
 		"saghen/blink.cmp",
-		-- optional: provides snippets for the snippet source
 		dependencies = { "rafamadriz/friendly-snippets" },
-
-		-- use a release tag to download pre-built binaries
 		version = "1.*",
-		-- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-		-- build = 'cargo build --release',
-		-- If you use nix, you can build from source using latest nightly rust with:
-		-- build = 'nix run .#build-plugin',
-
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts = {
 			-- See :h blink-cmp-config-keymap for defining your own keymap
 			keymap = { preset = "default" },
-
 			appearance = {
 				-- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
 				-- Adjusts spacing to ensure icons are aligned
