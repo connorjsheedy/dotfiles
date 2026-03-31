@@ -1,8 +1,9 @@
-**/plugins/
 .config/configstore/
 .config/gcloud/
 .config/lazygit/
 .config/snyk/
-.opencode/
-.config/tmux-sessionizer/
-.config/tmux/plugins/extrakto
+.opencode/*
+.config/tmux-sessionizer/*
+.config/tmux/plugins/*
+.config/opencode/*
+.config/uv/*
