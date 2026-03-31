@@ -1,7 +1,7 @@
 return {
 	plugins = {
 		pylint = {
-			enabled = true,
+			enabled = false,
 		},
 		pycodestyle = {
 			enabled = true,
@@ -13,7 +13,7 @@ return {
 			convention = "google",
 		},
 		black = {
-			enabled = true, -- Enable the plugin
+			enabled = false, -- Enable the plugin
 			lineLength = 88, -- Line length to pass to ruff checking and formatting
 		},
 		ruff = {

@@ -15,8 +15,8 @@ end
 check_for_poetry_lock()
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 vim.lsp.config("*", { capabilities = capabilities })
-vim.lsp.config("lua_ls", require("lsp.lua_ls"))
-vim.lsp.config("pylsp", { settings = { pylsp = require("lsp.pylsp") } })
+-- lsp/lua_ls.lua and lsp/pylsp.lua are loaded automatically by vim.lsp.enable()
+-- via Neovim's built-in lsp/ runtimepath discovery
 vim.lsp.enable({ "lua_ls", "pylsp", "luasnip", "ty" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
