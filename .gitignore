@@ -2,6 +2,8 @@
 .config/gcloud/*
 .config/lazygit/*
 .config/snyk/
+.config/nvm/*
+.config/tms/*
 .opencode/*
 .config/tmux-sessionizer/*
 .config/tmux/plugins/*
