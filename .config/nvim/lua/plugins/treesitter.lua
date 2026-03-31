@@ -1,5 +1,5 @@
 -- Treesitter
-local treesitter = require("nvim-treesitter.configs")
+local treesitter = require("nvim-treesitter.config")
 treesitter.setup({
 	ensure_installed = {
 		"python",
