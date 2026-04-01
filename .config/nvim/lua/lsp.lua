@@ -13,28 +13,12 @@ end
 
 -- Run this before we enable our LSP
 check_for_poetry_lock()
+
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 vim.lsp.config("*", { capabilities = capabilities })
 -- lsp/lua_ls.lua and lsp/pylsp.lua are loaded automatically by vim.lsp.enable()
 -- via Neovim's built-in lsp/ runtimepath discovery
 vim.lsp.enable({ "lua_ls", "pylsp", "luasnip", "ty" })
-
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("my.lsp", {}),
-	callback = function(ev)
-		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		-- LSP navigation keymaps are handled by snacks.nvim pickers (gd, gr, gD, etc.)
-		if client:supports_method("textDocument/completion") then
-			vim.opt.completeopt = { "menu", "menuone", "noinsert", "fuzzy", "popup" }
-			vim.lsp.completion.enable(true, client.id, ev.buf, {
-				autotrigger = true,
-				convert = function(item)
-					return { abbr = item.label:gsub("%b()", "") }
-				end,
-			})
-		end
-	end,
-})
 
 vim.diagnostic.config({
 	virtual_lines = {

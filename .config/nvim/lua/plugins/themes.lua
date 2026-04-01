@@ -72,4 +72,4 @@ require("rose-pine").setup({
 	end,
 })
 
-vim.cmd("colorscheme rose-pine")
+vim.cmd.colorscheme("rose-pine")

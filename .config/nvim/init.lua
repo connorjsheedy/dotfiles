@@ -25,7 +25,6 @@ require("plugins.oil")
 require("plugins.conform")
 require("plugins.tmux")
 require("plugins.mini_surround")
-require("plugins.opencode")
 require("Comment").setup()
 require("ibl").setup()
 require("lualine").setup({
