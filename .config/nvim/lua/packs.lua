@@ -58,13 +58,3 @@ vim.pack.add({
 	-- Formatting
 	gh("stevearc/conform.nvim"),
 })
-
--- Treesitter build hook
-vim.api.nvim_create_autocmd("User", {
-	pattern = "PackChanged",
-	callback = function(ev)
-		if ev.data and ev.data.spec and ev.data.spec.name == "nvim-treesitter" then
-			vim.cmd("TSUpdate")
-		end
-	end,
-})

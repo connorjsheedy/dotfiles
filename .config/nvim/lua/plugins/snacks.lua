@@ -10,17 +10,59 @@ require("snacks").setup({
 	},
 	picker = {
 		enabled = true,
-		actions = {
-			opencode_send = function(...)
-				return require("opencode").snacks_picker_send(...)
-			end,
-		},
-		win = {
-			input = {
-				keys = {
-					["<a-a>"] = { "opencode_send", mode = { "n", "i" } },
+		sources = {
+			files = {
+				hidden = true,
+				ignored = true,
+				win = {
+					input = {
+						keys = {
+							["<S-h>"] = "toggle_hidden",
+							["<S-i>"] = "toggle_ignored",
+							["<S-f>"] = "toggle_follow",
+							["<C-y>"] = { "yazi_copy_relative_path", mode = { "n", "i" } },
+						},
+					},
+				},
+				exclude = {
+					"**/.git/*",
+					"**/node_modules/*",
+					"**/.yarn/install*",
+					"**/.DS_Store",
+					"build/*",
+					"coverage/*",
+					"dist/*",
+					"**/target/*",
+					"**/public/*",
+					"**/digest*.txt",
 				},
 			},
+			grep = {
+				hidden = true,
+				ignored = true,
+				win = {
+					input = {
+						keys = {
+							["<S-h>"] = "toggle_hidden",
+							["<S-i>"] = "toggle_ignored",
+							["<S-f>"] = "toggle_follow",
+						},
+					},
+				},
+				exclude = {
+					"**/.git/*",
+					"**/node_modules/*",
+					"**/.venv/*",
+					"**/.DS_Store",
+					"build*/*",
+					"coverage/*",
+					"dist/*",
+					"**/target/*",
+					"**/public/*",
+					"**/digest*.txt",
+				},
+			},
+			grep_buffers = {},
 		},
 	},
 	quickfile = { enabled = true },

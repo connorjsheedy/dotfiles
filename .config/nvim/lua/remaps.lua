@@ -9,27 +9,30 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Tab/Shift-Tab: Like browser tabs, feels natural
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { desc = "Previous buffer" })
+
+-- Better indenting (stay in visual mode)
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+
 -- Remap half-page up and down to include auto center
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
-	callback = function()
-		vim.highlight.on_yank()
-	end,
-	group = highlight_group,
-	pattern = "*",
-})
-
 -- Oil setup and mappings
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 -- Diagnostic keymaps
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Go to previous diagnostic message" })
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Go to next diagnostic message" })
+vim.keymap.set("n", "[d", function()
+	vim.diagnostic.jump({ count = -1 })
+end, { desc = "Go to previous diagnostic message" })
+vim.keymap.set("n", "]d", function()
+	vim.diagnostic.jump({ count = 1 })
+end, { desc = "Go to next diagnostic message" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- Harpoon keymaps
@@ -56,4 +59,8 @@ vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle) -- Config Lua Line
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv") --Config Lua Line
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv") --Config Lua Line
 
-vim.keymap.set("x", "<leader>pp", '"_dP') --Config Lua Line
+vim.keymap.set("v", "<leader>p", '"_dP') --Config Lua Line
+
+-- Commenting (add comment above/below current line)
+vim.keymap.set("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Below" })
+vim.keymap.set("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", { desc = "Add Comment Above" })

@@ -11,6 +11,9 @@ vim.o.hlsearch = true
 -- Make line numbers default
 vim.wo.number = true
 vim.wo.relativenumber = true
+vim.wo.cursorline = true
+vim.o.scrolloff = 10
+vim.o.sidescrolloff = 8
 
 -- Enable mouse mode
 vim.o.mouse = "a"
@@ -25,10 +28,18 @@ vim.o.breakindent = true
 
 -- Save undo history
 vim.o.undofile = true
+vim.o.undolevels = 10000
+vim.o.undodir = vim.fn.expand("~/.vim/undodir")
+local undodir = vim.fn.expand("~/.vim/undodir")
+if vim.fn.isdirectory(undodir) == 0 then
+	vim.fn.mkdir(undodir, "p")
+end
 
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.o.hlsearch = false
+vim.o.incsearch = false
 
 -- Keep signcolumn on by default
 vim.wo.signcolumn = "yes"
@@ -40,26 +51,12 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
 
+-- Backup / Defer to Git
+vim.o.backup = false
+vim.o.writebackup = false
+vim.o.swapfile = false
+vim.o.autowrite = true
+vim.o.autoread = true
+
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
-vim.api.nvim_create_autocmd("FileType", {
-	callback = function()
-		local excluded_ft = { "lua", "python", "javascript", "rust" }
-		local current_ft = vim.bo.filetype
-
-		-- Check if current filetype is in the excluded list
-		local is_excluded = false
-		for _, ft in ipairs(excluded_ft) do
-			if ft == current_ft then
-				is_excluded = true
-				break
-			end
-		end
-
-		if not is_excluded then
-			vim.opt_local.wrap = true
-		end
-	end,
-})
-vim.o.tw = 100
-vim.opt.colorcolumn = "100"

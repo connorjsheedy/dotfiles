@@ -39,6 +39,9 @@ require("lualine").setup({
 -- Keymaps
 require("remaps")
 
+-- Autocmds
+require("autocmds")
+
 -- Deferred plugins (lazy-require pattern or autocmd-based)
 require("plugins.dap")
 require("plugins.neotest")
